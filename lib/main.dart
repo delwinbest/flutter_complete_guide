@@ -12,17 +12,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var questionIndex = 0;
+  var _questionIndex = 0;
 
   answerQuestion(int arrLength) {
     this.setState(() {
-      if (questionIndex == arrLength - 1) {
-        questionIndex = 0;
+      if (_questionIndex == arrLength - 1) {
+        _questionIndex = 0;
       } else {
-        questionIndex = questionIndex + 1;
+        _questionIndex = _questionIndex + 1;
       }
     });
-    print(questionIndex);
+    print(_questionIndex);
   }
 
   @override
@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
           title: Text("My First App"),
         ),
         body: Column(children: [
-          Text(questions.elementAt(questionIndex)),
+          Text(questions.elementAt(_questionIndex)),
           ElevatedButton(
               child: Text("Answer 1"),
               onPressed: () => answerQuestion(questions.length)),
