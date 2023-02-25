@@ -15,9 +15,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var questions = [
-    'What\'s your favourite color?',
-    'What\'s your favourite animal?',
-    'What\'s your favourite food?'
+    {
+      'questionText': 'What\'s your favourite color?',
+      'answers': ['Black', 'Green', 'Blue', 'White']
+    },
+    {
+      'questionText': 'What\'s your favourite animal?',
+      'answers': ['Rabbit', 'Snake', 'Elephant', 'Lion']
+    },
+    {
+      'questionText': 'What\'s your favourite food?',
+      'answers': ['Beef', 'Chicken', 'Ribs', 'Steak']
+    }
   ];
   var _questionIndex = 0;
 
@@ -41,7 +50,7 @@ class _MyAppState extends State<MyApp> {
           title: Text("My First App"),
         ),
         body: Column(children: [
-          Question(questions.elementAt(_questionIndex)),
+          Question(questions[_questionIndex]['questionText']),
           Answer(_answerQuestion),
           Answer(_answerQuestion),
           Answer(_answerQuestion),
