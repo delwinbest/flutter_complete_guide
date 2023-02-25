@@ -16,7 +16,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var questions = [
+  var questions = const [
     {
       'questionText': 'What\'s your favourite color?',
       'answers': ['Black', 'Green', 'Blue', 'White']
@@ -35,9 +35,7 @@ class _MyAppState extends State<MyApp> {
   _answerQuestion() {
     int arrLength = questions.length;
     this.setState(() {
-      if (_questionIndex == arrLength - 1) {
-        _questionIndex = 0;
-      } else {
+      if (_questionIndex < arrLength) {
         _questionIndex = _questionIndex + 1;
       }
     });
@@ -51,12 +49,14 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text("My First App"),
         ),
-        body: Column(children: [
-          Question(questions[_questionIndex]['questionText']),
-          ...(questions[_questionIndex]['answers'] as List<String>)
-              .map((answer) => Answer(_answerQuestion, answer))
-              .toList(),
-        ]),
+        body: _questionIndex < questions.length
+            ? Column(children: [
+                Question(questions[_questionIndex]['questionText']),
+                ...(questions[_questionIndex]['answers'] as List<String>)
+                    .map((answer) => Answer(_answerQuestion, answer))
+                    .toList(),
+              ])
+            : Column(children: [Question('You Did It!')]),
       ),
     );
   }
