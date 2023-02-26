@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_complete_guide/transaction.dart';
 import 'package:intl/intl.dart';
 
@@ -22,6 +23,8 @@ class MyHomePage extends StatelessWidget {
     Transaction(
         id: 't2', title: 'Groceries', amount: 16.99, date: DateTime.now())
   ];
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
 
   MyHomePage({super.key});
   @override
@@ -51,13 +54,20 @@ class MyHomePage extends StatelessWidget {
                       TextField(
                         autocorrect: true,
                         autofocus: true,
+                        controller: titleController,
                         decoration: InputDecoration(labelText: 'Title'),
                       ),
                       TextField(
+                        controller: amountController,
                         decoration: InputDecoration(labelText: 'Amount'),
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          print(titleController.text);
+                          print(amountController.text);
+                        },
                         child: Text('Add Transaction'),
                         style: ButtonStyle(
                             foregroundColor:
