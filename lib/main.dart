@@ -35,15 +35,51 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             Container(
               width: double.infinity,
-              child: Card(
+              child: const Card(
                 color: Colors.amber,
                 elevation: 10,
                 child: Text('Chart!'),
               ),
             ),
-            Card(
-              color: Colors.pink,
-              child: Text('List of TX'),
+            Column(
+              children: transactions
+                  .map((transaction) => Card(
+                          child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.purple,
+                                width: 2,
+                              ),
+                            ),
+                            padding: const EdgeInsets.all(10),
+                            child: Text(
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.purple),
+                                '\$${transaction.amount}'),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                transaction.title,
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                transaction.date.toString(),
+                                style: const TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          )
+                        ],
+                      )))
+                  .toList(),
             )
           ],
         ));
