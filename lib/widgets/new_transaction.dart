@@ -11,27 +11,27 @@ class NewTransaction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
           TextField(
             autocorrect: true,
             autofocus: true,
             controller: titleController,
-            decoration: InputDecoration(labelText: 'Title'),
+            decoration: const InputDecoration(labelText: 'Title'),
           ),
           TextField(
             controller: amountController,
-            decoration: InputDecoration(labelText: 'Amount'),
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            decoration: const InputDecoration(labelText: 'Amount'),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
           ),
           TextButton(
             onPressed: () {
               addTransaction(
                   titleController.text, double.parse(amountController.text));
             },
-            child: Text('Add Transaction'),
             style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all(Colors.purple)),
+            child: const Text('Add Transaction'),
           )
         ]),
       ),
