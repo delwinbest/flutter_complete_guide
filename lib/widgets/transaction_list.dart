@@ -8,7 +8,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
         height: 600,
         child: ListView.builder(
           itemBuilder: (ctx, index) {
@@ -25,10 +25,7 @@ class TransactionList extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.purple),
+                    style: Theme.of(context).textTheme.titleLarge,
                     '\$${transactions[index].amount.toStringAsFixed(2)}'),
               ),
               Column(

@@ -12,7 +12,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal Expenses',
       theme: ThemeData(
+          primaryColor: Colors.purple,
           fontFamily: 'Quicksand',
+          textTheme: ThemeData.light().textTheme.copyWith(
+              titleMedium: const TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20)),
+          // appBarTheme: AppBarTheme(
+          //   titleTextStyle:
+          //       Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
+          //             fontFamily: 'OpenSans',
+          //             // fontSize: 20,
+          //             // fontWeight: FontWeight.bold
+          //           ),
+          // ),
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
               .copyWith(secondary: Colors.amber)),
       home: MyHomePage(),
@@ -66,7 +80,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Personal Expenses'),
+        title: const Text(
+          'Personal Expenses',
+          style: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+        ),
         actions: <Widget>[
           IconButton(
               onPressed: () => _startAddNewTransaction(context),
