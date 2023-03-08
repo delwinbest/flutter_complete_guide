@@ -31,13 +31,13 @@ class MyApp extends StatelessWidget {
           // ),
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
               .copyWith(secondary: Colors.amber)),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key});
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -64,12 +64,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String newtitle, double newAmount) {
+  void _addNewTransaction(String newtitle, double newAmount, DateTime chosenDate) {
     final newTransaction = Transaction(
         id: DateTime.now().toString(),
         title: newtitle,
         amount: newAmount,
-        date: DateTime.now());
+        date: chosenDate);
 
     setState(() {
       _userTransactions.add(newTransaction);
@@ -86,6 +86,12 @@ class _MyHomePageState extends State<MyHomePage> {
             child: NewTransaction(addTransaction: _addNewTransaction),
           );
         });
+  }
+
+  void _deleteTransaction(String transactionId) {
+    setState(() {
+      _userTransactions.removeWhere((transaction) => transaction.id == transactionId);
+    });
   }
 
   @override
@@ -115,6 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TransactionList(
               transactions: _userTransactions,
+              deleteHandler: _deleteTransaction
             )
           ],
         ),

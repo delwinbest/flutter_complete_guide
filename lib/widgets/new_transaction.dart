@@ -87,7 +87,7 @@ class _NewTransactionState extends State<NewTransaction> {
           ElevatedButton(
             onPressed: () {
               widget.addTransaction(
-                  _titleController.text, double.parse(_amountController.text));
+                  _titleController.text, double.parse(_amountController.text), _selectedDate);
             },
             // style: ButtonStyle(
             //     foregroundColor: Theme.of(context).textTheme.labelLarge.color),
