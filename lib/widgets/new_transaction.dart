@@ -47,53 +47,61 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-          TextField(
-            autocorrect: true,
-            autofocus: true,
-            controller: _titleController,
-            decoration: const InputDecoration(labelText: 'Title'),
-            onSubmitted: (_) => _submitData(),
-          ),
-          TextField(
-            controller: _amountController,
-            decoration: const InputDecoration(labelText: 'Amount'),
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            onSubmitted: (_) => _submitData(),
-          ),
-          SizedBox(
-            height: 70,
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(_selectedDate == null
-                      ? 'No Date Chosen'
-                      : 'Chosen Date: ${DateFormat.yMd().format(_selectedDate as DateTime)}'),
-                ),
-                TextButton(
-                    onPressed: _presentDatePicker,
-                    child: Text(
-                      'Choose Date',
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ],
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            TextField(
+              autocorrect: true,
+              autofocus: true,
+              controller: _titleController,
+              decoration: const InputDecoration(labelText: 'Title'),
+              onSubmitted: (_) => _submitData(),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              widget.addTransaction(
-                  _titleController.text, double.parse(_amountController.text), _selectedDate);
-            },
-            // style: ButtonStyle(
-            //     foregroundColor: Theme.of(context).textTheme.labelLarge.color),
-            child: const Text('Add Transaction'),
-          )
-        ]),
+            TextField(
+              controller: _amountController,
+              decoration: const InputDecoration(labelText: 'Amount'),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) => _submitData(),
+            ),
+            SizedBox(
+              height: 70,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(_selectedDate == null
+                        ? 'No Date Chosen'
+                        : 'Chosen Date: ${DateFormat.yMd().format(_selectedDate as DateTime)}'),
+                  ),
+                  TextButton(
+                      onPressed: _presentDatePicker,
+                      child: Text(
+                        'Choose Date',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold),
+                      )),
+                ],
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                widget.addTransaction(_titleController.text,
+                    double.parse(_amountController.text), _selectedDate);
+              },
+              // style: ButtonStyle(
+              //     foregroundColor: Theme.of(context).textTheme.labelLarge.color),
+              child: const Text('Add Transaction'),
+            )
+          ]),
+        ),
       ),
     );
   }
