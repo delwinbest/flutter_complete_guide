@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter_complete_guide/models/transaction.dart';
 import 'package:flutter_complete_guide/widgets/chart.dart';
 import 'package:flutter_complete_guide/widgets/new_transaction.dart';
@@ -137,39 +137,38 @@ class _MyHomePageState extends State<MyHomePage> {
     final mediaQuery = MediaQuery.of(context);
 
     final bool isLandscape = mediaQuery.orientation == Orientation.landscape;
-    final dynamic appBar = Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: const Text(
-              'Personal Expenses',
-              style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  child: const Icon(CupertinoIcons.add),
-                  onTap: () => _startAddNewTransaction(context),
-                )
-              ],
-            ),
-          ) as ObstructingPreferredSizeWidget
-        : AppBar(
-            title: const Text(
-              'Personal Expenses',
-              style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            actions: <Widget>[
-              IconButton(
-                  onPressed: () => _startAddNewTransaction(context),
-                  icon: const Icon(Icons.add))
-            ],
-          );
+    // final dynamic appBar = Platform.isIOS
+    //     ? CupertinoNavigationBar(
+    //         middle: const Text(
+    //           'Personal Expenses',
+    //           style: TextStyle(
+    //               fontFamily: 'OpenSans',
+    //               fontSize: 20,
+    //               fontWeight: FontWeight.bold),
+    //         ),
+    //         trailing: Row(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: <Widget>[
+    //             GestureDetector(
+    //               child: const Icon(CupertinoIcons.add),
+    //               onTap: () => _startAddNewTransaction(context),
+    //             )
+    //           ],
+    //         ),
+    //       ) as ObstructingPreferredSizeWidget
+    // : AppBar(
+    final dynamic appBar = AppBar(
+      title: const Text(
+        'Personal Expenses',
+        style: TextStyle(
+            fontFamily: 'OpenSans', fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+      actions: <Widget>[
+        IconButton(
+            onPressed: () => _startAddNewTransaction(context),
+            icon: const Icon(Icons.add))
+      ],
+    );
     final txListWidget = SizedBox(
       height: (mediaQuery.size.height -
               appBar.preferredSize.height -
@@ -225,22 +224,22 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    return Platform.isIOS
-        ? CupertinoPageScaffold(
-            navigationBar: appBar,
-            child: pageBody,
-          )
-        : Scaffold(
-            appBar: appBar,
-            body: pageBody,
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: Platform.isIOS
-                ? Container()
-                : FloatingActionButton(
-                    child: const Icon(Icons.add),
-                    onPressed: () => _startAddNewTransaction(context),
-                  ),
-          );
+    // return Platform.isIOS
+    //     ? CupertinoPageScaffold(
+    //         navigationBar: appBar,
+    //         child: pageBody,
+    //       )
+    //     : Scaffold(
+    return Scaffold(
+      appBar: appBar,
+      body: pageBody,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () => _startAddNewTransaction(context),
+            ),
+    );
   }
 }
