@@ -132,6 +132,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _showChart = false;
 
+  Widget _buildLandscapeContent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Show Chart"),
+        Switch.adaptive(
+            value: _showChart,
+            onChanged: (val) {
+              setState(() {
+                _showChart = val;
+              });
+            })
+      ],
+    );
+  }
+
+  Widget _buildPortraitContent(MediaQueryData mediaQuery, AppBar appBar) {
+    return SizedBox(
+      height: (mediaQuery.size.height -
+              appBar.preferredSize.height -
+              mediaQuery.padding.top) *
+          (Platform.isIOS ? 0.8 : 0.65),
+      child: Chart(
+        recentTransactions: _recentTransactions,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -183,20 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          if (isLandscape)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Show Chart"),
-                Switch.adaptive(
-                    value: _showChart,
-                    onChanged: (val) {
-                      setState(() {
-                        _showChart = val;
-                      });
-                    })
-              ],
-            ),
+          if (isLandscape) _buildLandscapeContent(),
           if (!isLandscape)
             SizedBox(
               height: (mediaQuery.size.height -
@@ -210,15 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
           if (!isLandscape) txListWidget,
           if (isLandscape)
             _showChart
-                ? SizedBox(
-                    height: (mediaQuery.size.height -
-                            appBar.preferredSize.height -
-                            mediaQuery.padding.top) *
-                        (Platform.isIOS ? 0.8 : 0.65),
-                    child: Chart(
-                      recentTransactions: _recentTransactions,
-                    ),
-                  )
+                ? _buildPortraitContent(mediaQuery, appBar)
                 : txListWidget,
         ],
       ),
