@@ -4,11 +4,11 @@ import 'package:intl/intl.dart';
 
 class TransactionItem extends StatelessWidget {
   const TransactionItem({
-    super.key,
+    required Key key,
     required this.transaction,
     required this.mediaQuery,
     required this.deleteHandler,
-  });
+  }) : super(key: key);
 
   final Transaction transaction;
   final MediaQueryData mediaQuery;
@@ -16,6 +16,7 @@ class TransactionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(key);
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
       elevation: 5,
