@@ -132,32 +132,50 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _showChart = false;
 
-  Widget _buildLandscapeContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text("Show Chart"),
-        Switch.adaptive(
-            value: _showChart,
-            onChanged: (val) {
-              setState(() {
-                _showChart = val;
-              });
-            })
-      ],
-    );
+  List<Widget> _buildLandscapeContent(
+      MediaQueryData mediaQuery, AppBar appBar, Widget txListWidget) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text("Show Chart"),
+          Switch.adaptive(
+              value: _showChart,
+              onChanged: (val) {
+                setState(() {
+                  _showChart = val;
+                });
+              })
+        ],
+      ),
+      _showChart
+          ? SizedBox(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  (Platform.isIOS ? 0.8 : 0.65),
+              child: Chart(
+                recentTransactions: _recentTransactions,
+              ),
+            )
+          : txListWidget
+    ];
   }
 
-  Widget _buildPortraitContent(MediaQueryData mediaQuery, AppBar appBar) {
-    return SizedBox(
-      height: (mediaQuery.size.height -
-              appBar.preferredSize.height -
-              mediaQuery.padding.top) *
-          (Platform.isIOS ? 0.8 : 0.65),
-      child: Chart(
-        recentTransactions: _recentTransactions,
+  List<Widget> _buildPortraitContent(
+      MediaQueryData mediaQuery, AppBar appBar, Widget txListWidget) {
+    return [
+      SizedBox(
+        height: (mediaQuery.size.height -
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.3,
+        child: Chart(
+          recentTransactions: _recentTransactions,
+        ),
       ),
-    );
+      txListWidget
+    ];
   }
 
   @override
@@ -211,22 +229,10 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          if (isLandscape) _buildLandscapeContent(),
-          if (!isLandscape)
-            SizedBox(
-              height: (mediaQuery.size.height -
-                      appBar.preferredSize.height -
-                      mediaQuery.padding.top) *
-                  0.3,
-              child: Chart(
-                recentTransactions: _recentTransactions,
-              ),
-            ),
-          if (!isLandscape) txListWidget,
           if (isLandscape)
-            _showChart
-                ? _buildPortraitContent(mediaQuery, appBar)
-                : txListWidget,
+            ..._buildLandscapeContent(mediaQuery, appBar, txListWidget),
+          if (!isLandscape)
+            ..._buildPortraitContent(mediaQuery, appBar, txListWidget),
         ],
       ),
     );
