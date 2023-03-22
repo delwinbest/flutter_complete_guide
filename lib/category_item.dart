@@ -4,12 +4,17 @@ import 'package:flutter_complete_guide/category_meals_screen.dart';
 class CategoryItem extends StatelessWidget {
   final String title;
   final Color color;
+  final String id;
 
-  const CategoryItem({required this.title, required this.color, super.key});
+  const CategoryItem(
+      {required this.title, required this.color, required this.id, super.key});
 
   void selectCategory(BuildContext ctx) {
     Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
-      return const CategoryMealsScreen();
+      return CategoryMealsScreen(
+        categoryId: id,
+        categoryTitle: title,
+      );
     }));
   }
 
