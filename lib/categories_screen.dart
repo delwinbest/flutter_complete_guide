@@ -4,6 +4,7 @@ import './category_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
+  static const routeName = '/';
 
   @override
   Widget build(BuildContext context) {
