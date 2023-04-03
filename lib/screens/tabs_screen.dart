@@ -14,9 +14,9 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
 
-  final List<Widget> _pages = [
-    const CategoriesScreen(),
-    const FavouritesScreen()
+  final List<Map<String, Widget>> _pages = [
+    {'page': const CategoriesScreen(), 'title': const Text('Categories')},
+    {'page': const FavouritesScreen(), 'title': const Text('Your Favourite')}
   ];
 
   void _selectPage(int index) {
@@ -31,7 +31,7 @@ class _TabsScreenState extends State<TabsScreen> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Meals'),
+            title: _pages[_selectedPageIndex]['title'],
             // bottom: const TabBar(tabs: <Widget>[
             //   Tab(
             //     icon: Icon(Icons.category),
@@ -45,18 +45,23 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
           // body: TabBarView(
           //     children: <Widget>[CategoriesScreen(), FavouritesScreen()]),
-          body: _pages[_selectedPageIndex],
+          body: _pages[_selectedPageIndex]['page'],
           bottomNavigationBar: BottomNavigationBar(
             onTap: _selectPage,
             backgroundColor: Theme.of(context).colorScheme.primary,
             selectedItemColor: Theme.of(context).colorScheme.secondary,
             currentIndex: _selectedPageIndex,
             unselectedItemColor: Colors.white,
-            items: const [
+            type: BottomNavigationBarType.shifting,
+            items: [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.category), label: 'Categories'),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  icon: const Icon(Icons.category),
+                  label: 'Categories'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.star), label: 'Favourites')
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  icon: const Icon(Icons.star),
+                  label: 'Favourites')
             ],
           ),
         ));
