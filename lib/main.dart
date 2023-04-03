@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/meal_detail_screen.dart';
+import 'package:flutter_complete_guide/screens/tabs_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/category_meals_screen.dart';
 
@@ -30,11 +31,13 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.pink)
               .copyWith(secondary: Colors.amber)),
       // home: const CategoriesScreen(),
-      initialRoute: CategoriesScreen.routeName,
+      // initialRoute: CategoriesScreen.routeName,
+      initialRoute: TabsScreen.routeName,
       routes: {
         CategoriesScreen.routeName: (ctx) => const CategoriesScreen(),
         CategoryMealsScreen.routeName: (ctx) => const CategoryMealsScreen(),
-        MealDetailScreen.routeName: (ctx) => const MealDetailScreen()
+        MealDetailScreen.routeName: (ctx) => const MealDetailScreen(),
+        TabsScreen.routeName: (ctx) => const TabsScreen()
       },
       onGenerateRoute: (settings) {
         // print(settings.arguments);
