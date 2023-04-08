@@ -34,9 +34,9 @@ class MyApp extends StatelessWidget {
               .copyWith(secondary: Colors.amber)),
       // home: const CategoriesScreen(),
       // initialRoute: CategoriesScreen.routeName,
-      initialRoute: '/', // default is '/'
+      initialRoute: TabsScreen.routeName, // default is '/'
       routes: {
-        '/': (ctx) => const TabsScreen(),
+        TabsScreen.routeName: (ctx) => const TabsScreen(),
         CategoryMealsScreen.routeName: (ctx) => const CategoryMealsScreen(),
         MealDetailScreen.routeName: (ctx) => const MealDetailScreen(),
         FiltersScreen.routeName: (ctx) => const FiltersScreen(),
