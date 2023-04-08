@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/filters_screen.dart';
+import 'package:flutter_complete_guide/screens/tabs_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key});
+  Widget buildListTile(String title, IconData icon, Function tapHandler) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        size: 26,
+      ),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontFamily: 'RobotoCondensed',
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      onTap: () => tapHandler,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
-        children: [
+        children: <Widget>[
           Container(
             height: 120,
             width: double.infinity,
@@ -25,29 +43,12 @@ class MainDrawer extends StatelessWidget {
             height: 20,
           ),
           buildListTile('Meals', Icons.restaurant, () {
-            Navigator.of(context).pushNamed('/');
+            Navigator.of(context).pushReplacementNamed('/');
           }),
           buildListTile('Filters', Icons.settings, () {
-            Navigator.of(context).pushNamed(FiltersScreen.routeName);
+            Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName);
           }),
         ],
-      ),
-    );
-  }
-
-  ListTile buildListTile(String title, IconData icon, Function tapHandler) {
-    return ListTile(
-      onTap: tapHandler(),
-      leading: Icon(
-        icon,
-        size: 26,
-      ),
-      title: Text(
-        title,
-        style: const TextStyle(
-            fontFamily: 'RobotoCondensed',
-            fontSize: 24,
-            fontWeight: FontWeight.bold),
       ),
     );
   }
