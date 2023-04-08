@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/dummy_data.dart';
-import 'package:flutter_complete_guide/models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
   const MealDetailScreen({super.key});
@@ -56,6 +55,12 @@ class MealDetailScreen extends StatelessWidget {
             ))
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pop(mealId);
+        },
+        child: const Icon(Icons.delete),
       ),
     );
   }
