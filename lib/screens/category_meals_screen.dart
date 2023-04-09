@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/models/meal.dart';
 import 'package:flutter_complete_guide/widgets/meal_item.dart';
-import '../dummy_data.dart';
 
 class CategoryMealsScreen extends StatefulWidget {
-  const CategoryMealsScreen({super.key});
+  const CategoryMealsScreen({super.key, required this.availableMeals});
+  final List<Meal> availableMeals;
 
   // const CategoryMealsScreen(
   //     {super.key, required this.categoryId, required this.categoryTitle});
@@ -33,7 +33,7 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
           ModalRoute.of(context)!.settings.arguments as Map<String, String>;
       final categoryId = routeArgs['id'] as String;
       categoryTitle = routeArgs['title'] as String;
-      displayedMeals = DUMMY_MEALS
+      displayedMeals = widget.availableMeals
           .where((meal) => meal.categories.contains(categoryId))
           .toList();
       _loadedInitData = true;

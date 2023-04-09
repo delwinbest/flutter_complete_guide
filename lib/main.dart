@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/dummy_data.dart';
+import 'package:flutter_complete_guide/models/meal.dart';
 
 import './screens/tabs_screen.dart';
 import './screens/meal_detail_screen.dart';
@@ -18,7 +20,36 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
+  Map<String, bool> _filters = {
+    'gluten': false,
+    'lactose': false,
+    'vegan': false,
+    'vegetarian': false,
+  };
+  List<Meal> _availableMeals = DUMMY_MEALS;
+
+  void _setFilters(Map<String, bool> filterData) {
+    setState(() {
+      _filters = filterData;
+
+      _availableMeals = DUMMY_MEALS.where((meal) {
+        if (_filters['gluten']! && !meal.isGlutenFree) {
+          return false;
+        }
+        if (_filters['lactose']! && !meal.isLactoseFree) {
+          return false;
+        }
+        if (_filters['vegan']! && !meal.isVegan) {
+          return false;
+        }
+        if (_filters['vegetarian']! && !meal.isVegetarian) {
+          return false;
+        }
+        return true;
+      }).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,11 +73,14 @@ class _MyAppState extends State<MyApp> {
       initialRoute: TabsScreen.routeName, // default is '/'
       routes: {
         TabsScreen.routeName: (ctx) => const TabsScreen(),
-        CategoryMealsScreen.routeName: (ctx) => const CategoryMealsScreen(),
+        CategoryMealsScreen.routeName: (ctx) =>
+            CategoryMealsScreen(availableMeals: _availableMeals),
         MealDetailScreen.routeName: (ctx) => const MealDetailScreen(),
-        FiltersScreen.routeName: (ctx) => const FiltersScreen(),
+        FiltersScreen.routeName: (ctx) => FiltersScreen(
+            filterData: _filters, saveFiltersHandler: _setFilters),
       },
       onGenerateRoute: (settings) {
+        return null;
         // print(settings.arguments);
         // return MaterialPageRoute(
         //     builder: (context) => const CategoriesScreen());
