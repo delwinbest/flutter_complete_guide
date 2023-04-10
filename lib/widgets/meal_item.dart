@@ -3,22 +3,21 @@ import 'package:flutter_complete_guide/models/meal.dart';
 import 'package:flutter_complete_guide/screens/meal_detail_screen.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem(
-      {super.key,
-      required this.id,
-      required this.title,
-      required this.imageUrl,
-      required this.duration,
-      required this.affordability,
-      required this.complexity,
-      required this.removeItem});
+  const MealItem({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.imageUrl,
+    required this.duration,
+    required this.affordability,
+    required this.complexity,
+  });
   final String title;
   final String imageUrl;
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
   final String id;
-  final Function removeItem;
 
   String get complexityText {
     switch (complexity) {
@@ -50,7 +49,7 @@ class MealItem extends StatelessWidget {
     Navigator.of(context).pushNamed(MealDetailScreen.routeName, arguments: {
       'id': id
     }).then((response) => {
-          if (response != null) {removeItem(response)}
+          // if (response != null) {removeItem(response)}
         });
   }
 

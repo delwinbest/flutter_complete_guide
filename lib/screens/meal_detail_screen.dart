@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/dummy_data.dart';
 
 class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen({super.key});
+  const MealDetailScreen(
+      {super.key,
+      required this.toggleFavouriteHandler,
+      required this.isMealFavouriteHandler});
 
   static const routeName = '/meal-detail';
 
+  final Function toggleFavouriteHandler;
+  final Function isMealFavouriteHandler;
   @override
   Widget build(BuildContext context) {
     final routeArgs =
@@ -57,10 +62,10 @@ class MealDetailScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pop(mealId);
-        },
-        child: const Icon(Icons.delete),
+        onPressed: () => toggleFavouriteHandler(mealId),
+        child: isMealFavouriteHandler(mealId)
+            ? const Icon(Icons.star)
+            : const Icon(Icons.star_border),
       ),
     );
   }
