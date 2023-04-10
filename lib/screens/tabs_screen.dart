@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/models/meal.dart';
 import 'package:flutter_complete_guide/screens/categories_screen.dart';
 import 'package:flutter_complete_guide/screens/favourites_screen.dart';
 import 'package:flutter_complete_guide/widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
-  const TabsScreen({super.key});
+  const TabsScreen({super.key, required this.favouriteMeals});
 
   static const routeName = '/tabs-screen';
+  final List<Meal> favouriteMeals;
 
   @override
   State<TabsScreen> createState() => _TabsScreenState();
@@ -14,11 +16,19 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
+  late List<Map<String, Widget>> _pages;
 
-  final List<Map<String, Widget>> _pages = [
-    {'page': const CategoriesScreen(), 'title': const Text('Categories')},
-    {'page': const FavouritesScreen(), 'title': const Text('Your Favourite')}
-  ];
+  @override
+  void initState() {
+    _pages = [
+      {'page': const CategoriesScreen(), 'title': const Text('Categories')},
+      {
+        'page': FavouritesScreen(favouriteMeals: widget.favouriteMeals),
+        'title': const Text('Your Favourite')
+      }
+    ];
+    super.initState();
+  }
 
   void _selectPage(int index) {
     setState(() {
@@ -44,7 +54,7 @@ class _TabsScreenState extends State<TabsScreen> {
             //   )
             // ]),
           ),
-          drawer: MainDrawer(),
+          drawer: const MainDrawer(),
           // body: TabBarView(
           //     children: <Widget>[CategoriesScreen(), FavouritesScreen()]),
           body: _pages[_selectedPageIndex]['page'],

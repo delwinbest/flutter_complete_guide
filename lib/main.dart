@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
     'vegetarian': false,
   };
   List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _favouriteMeals = [];
 
   void _setFilters(Map<String, bool> filterData) {
     setState(() {
@@ -72,7 +73,8 @@ class _MyAppState extends State<MyApp> {
       // initialRoute: CategoriesScreen.routeName,
       initialRoute: TabsScreen.routeName, // default is '/'
       routes: {
-        TabsScreen.routeName: (ctx) => const TabsScreen(),
+        TabsScreen.routeName: (ctx) =>
+            TabsScreen(favouriteMeals: _favouriteMeals),
         CategoryMealsScreen.routeName: (ctx) =>
             CategoryMealsScreen(availableMeals: _availableMeals),
         MealDetailScreen.routeName: (ctx) => const MealDetailScreen(),
