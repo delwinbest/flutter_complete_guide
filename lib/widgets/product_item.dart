@@ -16,15 +16,17 @@ class ProductItem extends StatelessWidget {
       footer: GridTileBar(
         leading: IconButton(
           icon: const Icon(Icons.favorite),
+          color: Theme.of(context).colorScheme.secondary,
           onPressed: () {},
         ),
-        backgroundColor: Colors.black54,
+        backgroundColor: Colors.black87,
         title: Text(
           title,
           textAlign: TextAlign.center,
         ),
         trailing: IconButton(
           icon: const Icon(Icons.shopping_cart),
+          color: Theme.of(context).colorScheme.secondary,
           onPressed: () {},
         ),
       ),
