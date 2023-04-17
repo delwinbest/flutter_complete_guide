@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Lato'),
         home: const ProductOverViewScreen(),
         routes: {
-          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+          ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
         },
       ),
     );
