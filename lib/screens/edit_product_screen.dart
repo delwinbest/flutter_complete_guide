@@ -25,6 +25,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
+    final isValid = _form.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
     _form.currentState!.save();
   }
 
@@ -57,6 +61,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         padding: const EdgeInsets.all(16),
         child: Form(
             key: _form,
+            autovalidateMode: AutovalidateMode.always,
             child: ListView(
               children: [
                 TextFormField(
@@ -73,6 +78,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         description: _editedProduct.description,
                         price: _editedProduct.price,
                         imageUrl: _editedProduct.imageUrl);
+                  },
+                  validator: (value) {
+                    if (value!.isNotEmpty) {
+                      return null;
+                    }
+                    return 'Please provide a title';
                   },
                 ),
                 TextFormField(
