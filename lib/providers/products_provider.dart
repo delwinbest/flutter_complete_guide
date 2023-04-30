@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/product.dart';
+import 'package:http/http.dart' as http;
 
 class ProductsProvider with ChangeNotifier {
   // ignore: prefer_final_fields
@@ -59,6 +62,20 @@ class ProductsProvider with ChangeNotifier {
   }
 
   void addProduct(Product product) {
+    Uri url = Uri(
+        scheme: 'https',
+        host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
+        path: '/products.json');
+    http
+        .post(url,
+            body: json.encode({
+              'title': product.title,
+              'description': product.description,
+              'imageUrl': product.imageUrl,
+              'price': product.price,
+              'isFavorite': product.isFavorite
+            }))
+        .then((value) => print(value.body));
     final newProduct = Product(
         id: UniqueKey().toString(),
         title: product.title,
