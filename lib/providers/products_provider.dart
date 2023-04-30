@@ -38,7 +38,7 @@ class ProductsProvider with ChangeNotifier {
     ),
   ];
 
-  bool _showFavoritesOnly = false;
+  // bool _showFavoritesOnly = false;
 
   List<Product> get items {
     return [..._items];
@@ -58,8 +58,14 @@ class ProductsProvider with ChangeNotifier {
     return _items.where((prodItem) => prodItem.isFavorite).toList();
   }
 
-  void addProduct() {
-    // _items.add(value);
+  void addProduct(Product product) {
+    final newProduct = Product(
+        id: UniqueKey().toString(),
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl);
+    _items.add(newProduct);
     notifyListeners();
   }
 
