@@ -17,8 +17,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _form = GlobalKey<FormState>();
-  Product _editedProduct =
-      Product(id: '', title: '', description: '', price: 0, imageUrl: '');
+  bool _isInit = true;
+
+  Product _editedProduct = Product(
+      id: '',
+      title: '',
+      description: '',
+      price: 0,
+      imageUrl: '',
+      isFavorite: false);
 
   void _updateImageURL() {
     if (!_imageUrlFocusNode.hasFocus) {
@@ -40,8 +47,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState!.save();
-    Provider.of<ProductsProvider>(context, listen: false)
-        .addProduct(_editedProduct);
+    if (_editedProduct.id == '') {
+      Provider.of<ProductsProvider>(context, listen: false)
+          .addProduct(_editedProduct);
+    } else {
+      Provider.of<ProductsProvider>(context, listen: false)
+          .updateProduct(_editedProduct);
+    }
+
     Navigator.of(context).pop();
   }
 
@@ -49,6 +62,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void initState() {
     _imageUrlFocusNode.addListener(_updateImageURL);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit && ModalRoute.of(context)?.settings.arguments != null) {
+      final productId = ModalRoute.of(context)!.settings.arguments as String;
+      _editedProduct = Provider.of<ProductsProvider>(context, listen: false)
+          .findById(productId);
+      _imageUrlController.text = _editedProduct.imageUrl;
+    }
+    _isInit = false;
+    super.didChangeDependencies();
   }
 
   @override
@@ -78,6 +103,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             child: ListView(
               children: [
                 TextFormField(
+                  initialValue: _editedProduct.title,
                   decoration: const InputDecoration(
                     labelText: 'Title',
                   ),
@@ -86,11 +112,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       FocusScope.of(context).requestFocus(_priceFocusNode),
                   onSaved: (value) {
                     _editedProduct = Product(
-                        id: _editedProduct.id,
-                        title: value as String,
-                        description: _editedProduct.description,
-                        price: _editedProduct.price,
-                        imageUrl: _editedProduct.imageUrl);
+                      id: _editedProduct.id,
+                      title: value as String,
+                      description: _editedProduct.description,
+                      price: _editedProduct.price,
+                      imageUrl: _editedProduct.imageUrl,
+                      isFavorite: _editedProduct.isFavorite,
+                    );
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -100,6 +128,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   },
                 ),
                 TextFormField(
+                    initialValue: _editedProduct.price.toString(),
                     decoration: const InputDecoration(
                       labelText: 'Price',
                     ),
@@ -110,11 +139,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         FocusScope.of(context).requestFocus(_priceFocusNode),
                     onSaved: (value) {
                       _editedProduct = Product(
-                          id: _editedProduct.id,
-                          title: _editedProduct.title,
-                          description: _editedProduct.description,
-                          price: double.parse(value as String),
-                          imageUrl: _editedProduct.imageUrl);
+                        id: _editedProduct.id,
+                        title: _editedProduct.title,
+                        description: _editedProduct.description,
+                        price: double.parse(value as String),
+                        imageUrl: _editedProduct.imageUrl,
+                        isFavorite: _editedProduct.isFavorite,
+                      );
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -129,6 +160,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       return null;
                     }),
                 TextFormField(
+                  initialValue: _editedProduct.description,
                   decoration: const InputDecoration(
                     labelText: 'Description',
                   ),
@@ -137,11 +169,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   focusNode: _descriptionFocusNode,
                   onSaved: (value) {
                     _editedProduct = Product(
-                        id: _editedProduct.id,
-                        title: _editedProduct.title,
-                        description: value as String,
-                        price: _editedProduct.price,
-                        imageUrl: _editedProduct.imageUrl);
+                      id: _editedProduct.id,
+                      title: _editedProduct.title,
+                      description: value as String,
+                      price: _editedProduct.price,
+                      imageUrl: _editedProduct.imageUrl,
+                      isFavorite: _editedProduct.isFavorite,
+                    );
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -182,11 +216,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         onFieldSubmitted: (_) => _saveForm,
                         onSaved: (value) {
                           _editedProduct = Product(
-                              id: _editedProduct.id,
-                              title: _editedProduct.title,
-                              description: _editedProduct.description,
-                              price: _editedProduct.price,
-                              imageUrl: value as String);
+                            id: _editedProduct.id,
+                            title: _editedProduct.title,
+                            description: _editedProduct.description,
+                            price: _editedProduct.price,
+                            imageUrl: value as String,
+                            isFavorite: _editedProduct.isFavorite,
+                          );
                         },
                         validator: (value) {
                           if (value!.isEmpty) {
