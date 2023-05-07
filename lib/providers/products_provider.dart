@@ -61,12 +61,12 @@ class ProductsProvider with ChangeNotifier {
     return _items.where((prodItem) => prodItem.isFavorite).toList();
   }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     Uri url = Uri(
         scheme: 'https',
         host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
         path: '/products.json');
-    http
+    return http
         .post(url,
             body: json.encode({
               'title': product.title,
@@ -87,11 +87,12 @@ class ProductsProvider with ChangeNotifier {
     });
   }
 
-  void updateProduct(Product product) {
+  Future<void> updateProduct(Product product) {
     final prodIndex = _items
         .indexWhere((existingProduct) => existingProduct.id == product.id);
     if (prodIndex >= 0) _items[prodIndex] = product;
     notifyListeners();
+    return Future.value();
   }
 
   void deleteProduct(String id) {
