@@ -75,15 +75,16 @@ class ProductsProvider with ChangeNotifier {
               'price': product.price,
               'isFavorite': product.isFavorite
             }))
-        .then((value) => print(value.body));
-    final newProduct = Product(
-        id: UniqueKey().toString(),
-        title: product.title,
-        description: product.description,
-        price: product.price,
-        imageUrl: product.imageUrl);
-    _items.add(newProduct);
-    notifyListeners();
+        .then((response) {
+      final newProduct = Product(
+          id: json.decode(response.body)['name'],
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl);
+      _items.add(newProduct);
+      notifyListeners();
+    });
   }
 
   void updateProduct(Product product) {
