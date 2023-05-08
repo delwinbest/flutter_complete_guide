@@ -84,7 +84,7 @@ class ProductsProvider with ChangeNotifier {
       _items.add(newProduct);
       notifyListeners();
     } catch (error) {
-      print(error);
+      // print(error);
       rethrow;
     }
   }
