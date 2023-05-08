@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/product.dart';
@@ -115,12 +116,31 @@ class ProductsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateProduct(Product product) {
+  Future<void> updateProduct(Product product) async {
     final prodIndex = _items
         .indexWhere((existingProduct) => existingProduct.id == product.id);
-    if (prodIndex >= 0) _items[prodIndex] = product;
-    notifyListeners();
-    return Future.value();
+    if (prodIndex >= 0) {
+      final Uri url = Uri(
+          scheme: 'https',
+          host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
+          path: '/products/${product.id}.json');
+      try {
+        String body = json.encode({
+          'title': product.title,
+          'description': product.description,
+          'imageUrl': product.imageUrl,
+          'price': product.price,
+          'isFavorite': product.isFavorite
+        });
+        http.Response response = await http.patch(url, body: body);
+        if (response.statusCode != 200) throw Error();
+        _items[prodIndex] = product;
+        notifyListeners();
+      } catch (error) {
+        rethrow;
+      }
+      return Future.value();
+    }
   }
 
   void deleteProduct(String id) {

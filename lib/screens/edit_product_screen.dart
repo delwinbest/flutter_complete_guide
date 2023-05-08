@@ -52,14 +52,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != '') {
-      Provider.of<ProductsProvider>(context, listen: false)
-          .updateProduct(_editedProduct)
-          .then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
-      });
+      try {
+        await Provider.of<ProductsProvider>(context, listen: false)
+            .updateProduct(_editedProduct);
+      } catch (error) {
+        await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                    title: const Text('An error occurred'),
+                    content: const Text('Something went wrong'),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Okay'))
+                    ]));
+      }
     } else {
       try {
         await Provider.of<ProductsProvider>(context, listen: false)
@@ -77,13 +86,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           },
                           child: const Text('Okay'))
                     ]));
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
       }
     }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
   }
 
   @override
