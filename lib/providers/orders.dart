@@ -18,7 +18,7 @@ class OrderItem {
 }
 
 class Orders with ChangeNotifier {
-  final List<OrderItem> _orders = [];
+  List<OrderItem> _orders = [];
 
   List<OrderItem> get orders {
     return [..._orders];
@@ -50,6 +50,32 @@ class Orders with ChangeNotifier {
             amount: total,
             dateTime: DateTime.now(),
             products: cartProducts));
+    notifyListeners();
+  }
+
+  Future<void> fetchAndSetOrders() async {
+    Uri url = Uri(
+        scheme: 'https',
+        host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
+        path: '/orders.json');
+    final http.Response response = await http.get(url);
+    final List<OrderItem> loadedOrders = [];
+    if (response.body == "null") return;
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    extractedData.forEach((orderId, orderData) {
+      loadedOrders.add(OrderItem(
+          id: orderId,
+          amount: orderData['amount'],
+          dateTime: DateTime.parse(orderData['dateTime']),
+          products: (orderData['products'] as List<dynamic>)
+              .map((product) => CartItem(
+                  id: product['id'],
+                  title: product['title'],
+                  quantity: product['quantity'],
+                  price: product['price']))
+              .toList()));
+    });
+    _orders = loadedOrders;
     notifyListeners();
   }
 }
