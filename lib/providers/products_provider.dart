@@ -130,7 +130,6 @@ class ProductsProvider with ChangeNotifier {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
-          'isFavorite': product.isFavorite
         });
         http.Response response = await http.patch(url, body: body);
         if (response.statusCode != 200) throw Error();
