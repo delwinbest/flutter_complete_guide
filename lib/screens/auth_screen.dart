@@ -109,7 +109,7 @@ class _AuthCardState extends State<AuthCard>
   var _isLoading = false;
   final _passwordController = TextEditingController();
   late AnimationController _controller;
-  late Animation<Size> _heightAnimation;
+  late Animation<Offset> _slideAnimation;
   late Animation<double> _opacityAnimation;
 
   @override
@@ -135,6 +135,8 @@ class _AuthCardState extends State<AuthCard>
     // _heightAnimation.addListener(() {
     //   setState(() {});
     // });
+    _slideAnimation = Tween<Offset>(begin: Offset(0, -1.5), end: Offset(0, 0))
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
   }
 
   @override
@@ -271,19 +273,22 @@ class _AuthCardState extends State<AuthCard>
                     curve: Curves.easeIn,
                     child: FadeTransition(
                         opacity: _opacityAnimation,
-                        child: TextFormField(
-                          enabled: _authMode == AuthMode.signup,
-                          decoration: const InputDecoration(
-                              labelText: 'Confirm Password'),
-                          obscureText: true,
-                          validator: _authMode == AuthMode.signup
-                              ? (value) {
-                                  if (value != _passwordController.text) {
-                                    return 'Passwords do not match!';
+                        child: SlideTransition(
+                          position: _slideAnimation,
+                          child: TextFormField(
+                            enabled: _authMode == AuthMode.signup,
+                            decoration: const InputDecoration(
+                                labelText: 'Confirm Password'),
+                            obscureText: true,
+                            validator: _authMode == AuthMode.signup
+                                ? (value) {
+                                    if (value != _passwordController.text) {
+                                      return 'Passwords do not match!';
+                                    }
+                                    return null;
                                   }
-                                  return null;
-                                }
-                              : null,
+                                : null,
+                          ),
                         )),
                   ),
                   const SizedBox(
