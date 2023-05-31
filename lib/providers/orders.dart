@@ -19,9 +19,13 @@ class OrderItem {
 
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
-  final String authToken;
+  String authToken = '';
+  String userId = '';
 
-  Orders({this.authToken = "", List<OrderItem> previousOrders = const []})
+  Orders(
+      {this.authToken = '',
+      this.userId = '',
+      List<OrderItem> previousOrders = const []})
       : _orders = previousOrders;
 
   List<OrderItem> get orders {
@@ -33,7 +37,7 @@ class Orders with ChangeNotifier {
     Uri url = Uri(
         scheme: 'https',
         host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
-        path: '/orders.json',
+        path: '/orders/$userId.json',
         queryParameters: {"auth": authToken});
     final http.Response response = await http.post(url,
         body: json.encode({
@@ -62,7 +66,7 @@ class Orders with ChangeNotifier {
     Uri url = Uri(
         scheme: 'https',
         host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
-        path: '/orders.json',
+        path: '/orders/$userId.json',
         queryParameters: {"auth": authToken});
     final http.Response response = await http.get(url);
     final List<OrderItem> loadedOrders = [];
