@@ -22,6 +22,15 @@ class Auth with ChangeNotifier {
     return null;
   }
 
+  String? get userId {
+    if (_expiryDate != null &&
+        _expiryDate!.isAfter(DateTime.now()) &&
+        _token != null) {
+      return _userId;
+    }
+    return null;
+  }
+
   Future<void> _authenticate(
       String email, String password, String urlSgement) async {
     final Uri url = Uri(

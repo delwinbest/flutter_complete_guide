@@ -20,18 +20,18 @@ class Product with ChangeNotifier {
       required this.imageUrl,
       this.isFavorite = false});
 
-  Future<void> toggleFavoriteStatus(String authToken) async {
+  Future<void> toggleFavoriteStatus(String authToken, String userId) async {
     final Uri url = Uri(
         scheme: 'https',
         host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
-        path: '/products/$id.json',
+        path: '/userFavorites/$userId/$id.json',
         queryParameters: {"auth": authToken});
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
     try {
       http.Response response =
-          await http.patch(url, body: json.encode({'isFavorite': isFavorite}));
+          await http.put(url, body: json.encode({'isFavorite': isFavorite}));
       if (response.statusCode >= 400) {
         throw HttpException('Unable to set favourite');
       }

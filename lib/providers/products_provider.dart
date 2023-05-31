@@ -8,10 +8,13 @@ import 'package:http/http.dart' as http;
 class ProductsProvider with ChangeNotifier {
   // ignore: prefer_final_fields
   String authToken = '';
+  String userId = '';
   List<Product> _items = [];
 
   ProductsProvider(
-      {this.authToken = '', List<Product> previousItems = const []})
+      {this.authToken = '',
+      this.userId = '',
+      List<Product> previousItems = const []})
       : _items = previousItems;
 
   // bool _showFavoritesOnly = false;
@@ -19,16 +22,6 @@ class ProductsProvider with ChangeNotifier {
   List<Product> get items {
     return [..._items];
   }
-
-  // void showFavoritesOnly() {
-  //   _showFavoritesOnly = true;
-  //   notifyListeners();
-  // }
-
-  // void showAll() {
-  //   _showFavoritesOnly = false;
-  //   notifyListeners();
-  // }
 
   List<Product> get favoriteProducts {
     return _items.where((prodItem) => prodItem.isFavorite).toList();
@@ -47,7 +40,6 @@ class ProductsProvider with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavorite': product.isFavorite
           }));
       final newProduct = Product(
           id: json.decode(response.body)['name'],
@@ -58,23 +50,28 @@ class ProductsProvider with ChangeNotifier {
       _items.add(newProduct);
       notifyListeners();
     } catch (error) {
-      // print(error);
       rethrow;
     }
   }
 
   Future<void> fetchAndSetProducts() async {
-    final Uri url = Uri(
+    Uri url = Uri(
         scheme: 'https',
         host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
         path: '/products.json',
         queryParameters: {"auth": authToken});
     try {
-      final response = await http.get(url);
-      // print(json.decode(response.body));
-      if (response.body == "null") return;
-
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final productResponse = await http.get(url);
+      if (productResponse.body == "null") return;
+      final extractedData =
+          json.decode(productResponse.body) as Map<String, dynamic>;
+      url = Uri(
+          scheme: 'https',
+          host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
+          path: '/userFavorites/$userId.json',
+          queryParameters: {"auth": authToken});
+      final favoriteResponse = await http.get(url);
+      final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
       extractedData.forEach((productId, productData) {
         loadedProducts.add(Product(
@@ -83,7 +80,9 @@ class ProductsProvider with ChangeNotifier {
             description: productData['description'],
             price: productData['price'],
             imageUrl: productData['imageUrl'],
-            isFavorite: productData['isFavorite']));
+            isFavorite: favoriteData[productId] == null
+                ? false
+                : favoriteData[productId]['isFavorite'] ?? false));
       });
       _items = loadedProducts;
       notifyListeners();
