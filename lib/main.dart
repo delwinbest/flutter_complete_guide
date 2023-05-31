@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/providers/cart.dart';
 import 'package:flutter_complete_guide/providers/orders.dart';
+import 'package:flutter_complete_guide/providers/product.dart';
 import 'package:flutter_complete_guide/providers/products_provider.dart';
 import 'package:flutter_complete_guide/screens/auth_screen.dart';
 import 'package:flutter_complete_guide/screens/cart_screen.dart';
@@ -32,7 +33,12 @@ class MyApp extends StatelessWidget {
                   previousProductdata == null ? [] : previousProductdata.items),
         ),
         ChangeNotifierProvider(create: (_) => Cart()),
-        ChangeNotifierProvider(create: (_) => Orders()),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+            create: (_) => Orders(),
+            update: (_, auth, previousOrderdata) => Orders(
+                authToken: auth.token as String,
+                previousOrders:
+                    previousOrderdata == null ? [] : previousOrderdata.orders)),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(

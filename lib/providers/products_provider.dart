@@ -38,7 +38,8 @@ class ProductsProvider with ChangeNotifier {
     Uri url = Uri(
         scheme: 'https',
         host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
-        path: '/products.json');
+        path: '/products.json',
+        queryParameters: {"auth": authToken});
     try {
       final response = await http.post(url,
           body: json.encode({
@@ -121,7 +122,8 @@ class ProductsProvider with ChangeNotifier {
     final Uri url = Uri(
         scheme: 'https',
         host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
-        path: '/products/$id.json');
+        path: '/products/$id.json',
+        queryParameters: {"auth": authToken});
     final existingProductIndex =
         _items.indexWhere((product) => product.id == id);
     Product existingProduct = _items[existingProductIndex];
