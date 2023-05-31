@@ -40,6 +40,7 @@ class ProductsProvider with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
+            'creatorId': userId
           }));
       final newProduct = Product(
           id: json.decode(response.body)['name'],
@@ -54,12 +55,19 @@ class ProductsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    Map<String, String> filterParameters = filterByUser
+        ? {
+            "auth": authToken,
+            "orderBy": "\"creatorId\"",
+            "equalTo": "\"$userId\""
+          }
+        : {"auth": authToken};
     Uri url = Uri(
         scheme: 'https',
         host: 'flutter-update-900a1-default-rtdb.firebaseio.com',
         path: '/products.json',
-        queryParameters: {"auth": authToken});
+        queryParameters: filterParameters);
     try {
       final productResponse = await http.get(url);
       if (productResponse.body == "null") return;
