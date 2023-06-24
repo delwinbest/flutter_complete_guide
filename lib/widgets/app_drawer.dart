@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/helpers/customer_route.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/screens/orders_screen.dart';
 import 'package:flutter_complete_guide/screens/product_overview_screen.dart';
@@ -27,8 +28,9 @@ class AppDrawer extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.payment),
           title: const Text('Orders'),
-          onTap: () => Navigator.of(context)
-              .pushReplacementNamed(OrdersScreen.routeName),
+          onTap: () => Navigator.of(context).pushReplacement(CustomRoute(
+            builder: (context) => const OrdersScreen(),
+          )),
         ),
         const Divider(),
         ListTile(
