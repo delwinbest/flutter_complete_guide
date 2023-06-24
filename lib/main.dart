@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  MyApp({super.key});
+  final ThemeData theme = ThemeData();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Great Places',
+      theme: theme.copyWith(
+          colorScheme: theme.colorScheme
+              .copyWith(primary: Colors.indigo, secondary: Colors.amber)),
       home: const MyHomePage(),
     );
   }
@@ -25,7 +25,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Tempalte')),
+      appBar: AppBar(title: const Text('Template')),
       body: const Center(child: Text('Template')),
     );
   }
