@@ -10,6 +10,8 @@ enum AuthMode { signup, login }
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
 
+  const AuthScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -135,7 +137,7 @@ class _AuthCardState extends State<AuthCard>
     // _heightAnimation.addListener(() {
     //   setState(() {});
     // });
-    _slideAnimation = Tween<Offset>(begin: Offset(0, -1.5), end: Offset(0, 0))
+    _slideAnimation = Tween<Offset>(begin: const Offset(0, -1.5), end: const Offset(0, 0))
         .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
   }
 

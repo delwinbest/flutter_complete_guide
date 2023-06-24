@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/providers/cart.dart';
 import 'package:flutter_complete_guide/providers/orders.dart';
-import 'package:flutter_complete_guide/providers/product.dart';
 import 'package:flutter_complete_guide/providers/products_provider.dart';
 import 'package:flutter_complete_guide/screens/auth_screen.dart';
 import 'package:flutter_complete_guide/screens/cart_screen.dart';
@@ -58,7 +57,7 @@ class MyApp extends StatelessWidget {
                       authResultSnapshot.connectionState ==
                               ConnectionState.waiting
                           ? const SplashScreen()
-                          : AuthScreen()),
+                          : const AuthScreen()),
           routes: {
             UserProductsScreen.routeName: (ctx) => const UserProductsScreen(),
             ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
