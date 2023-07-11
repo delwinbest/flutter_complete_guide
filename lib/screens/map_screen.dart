@@ -41,12 +41,14 @@ class _MapScreenState extends State<MapScreen> {
       ),
       body: GoogleMap(
           onTap: widget.isSelecting ? selectLocation : null,
-          markers: _pickedLocation == null
+          markers: (_pickedLocation == null && widget.isSelecting)
               ? ({})
               : {
                   Marker(
                       markerId: const MarkerId('m1'),
-                      position: _pickedLocation as LatLng)
+                      position: _pickedLocation ??
+                          LatLng(widget.initialLocation.latitude,
+                              widget.initialLocation.longitude))
                 },
           initialCameraPosition: CameraPosition(
               zoom: 16,

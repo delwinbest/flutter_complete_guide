@@ -15,8 +15,8 @@ class LocationHelper {
         "maps.googleapis.com",
         "/maps/api/geocode/json",
         {'latlng': '$lat,$long', 'key': GOOGLE_API_KEY}));
-    print(json.decode(response.body));
-    print(json.decode(response.body)['results']);
+    // print(json.decode(response.body));
+    // print(json.decode(response.body)['results']);
     return json.decode(response.body)['results'][0]['formatted_address'];
   }
 }
