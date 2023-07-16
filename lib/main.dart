@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/screens/chat_screen.dart';
+import 'package:flutter_complete_guide/screens/auth_screet.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,9 +13,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Chat',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)))),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Colors.pink,
+          background: Colors.pink,
+          secondary: Colors.deepPurple,
+        ),
       ),
-      home: const ChatScreen(),
+      home: const AuthScreen(),
     );
   }
 }
