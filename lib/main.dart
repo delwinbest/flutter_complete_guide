@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/auth_screet.dart';
 
@@ -23,7 +24,15 @@ class MyApp extends StatelessWidget {
           secondary: Colors.deepPurple,
         ),
       ),
-      home: const AuthScreen(),
+      home: FutureBuilder(
+          future: Firebase.initializeApp(),
+          builder: ((context, snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? const Center(
+                    child: Text('Connecting to database...'),
+                  )
+                : const AuthScreen();
+          })),
     );
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key});
+  final void Function(
+      String email, String password, String username, bool isLogin) submitFn;
+  final bool isLoading;
+  const AuthForm(this.submitFn, this.isLoading, {super.key});
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -19,7 +22,7 @@ class _AuthFormState extends State<AuthForm> {
     FocusScope.of(context).unfocus();
     if (isValid) {
       _formKey.currentState?.save();
-      print(_userEmail);
+      widget.submitFn(_userEmail, _userPassword, _userName, _isLogin);
     }
   }
 
@@ -51,7 +54,7 @@ class _AuthFormState extends State<AuthForm> {
                       _userEmail = newValue as String;
                     },
                   ),
-                  if (_isLogin)
+                  if (!_isLogin)
                     TextFormField(
                       key: const ValueKey('username'),
                       decoration: const InputDecoration(labelText: 'Username'),
@@ -82,18 +85,21 @@ class _AuthFormState extends State<AuthForm> {
                   const SizedBox(
                     height: 12,
                   ),
-                  ElevatedButton(
-                      onPressed: _trySubmit,
-                      child: Text(_isLogin ? 'Login' : 'Signup')),
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _isLogin = !_isLogin;
-                        });
-                      },
-                      child: Text(_isLogin
-                          ? 'Create new account'
-                          : 'I already have an account'))
+                  if (widget.isLoading) const CircularProgressIndicator(),
+                  if (!widget.isLoading)
+                    ElevatedButton(
+                        onPressed: _trySubmit,
+                        child: Text(_isLogin ? 'Login' : 'Signup')),
+                  if (!widget.isLoading)
+                    TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _isLogin = !_isLogin;
+                          });
+                        },
+                        child: Text(_isLogin
+                            ? 'Create new account'
+                            : 'I already have an account'))
                 ],
               ),
             ),
