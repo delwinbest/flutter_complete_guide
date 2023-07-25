@@ -1,7 +1,9 @@
 // ignore: depend_on_referenced_packages
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/auth_screet.dart';
+import 'package:flutter_complete_guide/screens/chat_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,13 +29,15 @@ class MyApp extends StatelessWidget {
       ),
       home: FutureBuilder(
           future: Firebase.initializeApp(),
-          builder: ((context, snapshot) {
-            return snapshot.connectionState == ConnectionState.waiting
-                ? const Center(
-                    child: Text('Connecting to database...'),
-                  )
-                : const AuthScreen();
-          })),
+          builder: ((context, snapshot) => StreamBuilder(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (context, userSnapshot) {
+                  if (userSnapshot.hasData) {
+                    return const ChatScreen();
+                  }
+                  return const AuthScreen();
+                },
+              ))),
     );
   }
 }
