@@ -34,25 +34,11 @@ class MessageBubble extends StatelessWidget {
             crossAxisAlignment:
                 isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
-              FutureBuilder(
-                future: FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(username)
-                    .get(),
-                builder: (ctx, futureSnapshot) {
-                  if (futureSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return Text('Loading...',
-                        style: TextStyle(
-                            color: (isMe ? Colors.black : Colors.white)));
-                  }
-                  return Text(
-                    futureSnapshot.data!['username'],
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: (isMe ? Colors.black : Colors.white)),
-                  );
-                },
+              Text(
+                username,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: (isMe ? Colors.black : Colors.white)),
               ),
               Text(
                 message,
