@@ -42,10 +42,9 @@ class MessageBubble extends StatelessWidget {
                 builder: (ctx, futureSnapshot) {
                   if (futureSnapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return Text(
-                      'Loading...',
-                      style: TextStyle(color: (isMe ? Colors.black : Colors.white)
-                    );
+                    return Text('Loading...',
+                        style: TextStyle(
+                            color: (isMe ? Colors.black : Colors.white)));
                   }
                   return Text(
                     futureSnapshot.data!['username'],

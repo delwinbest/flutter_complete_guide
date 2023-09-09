@@ -29,7 +29,14 @@ class MyApp extends StatelessWidget {
       ),
       home: FutureBuilder(
           future: Firebase.initializeApp(),
-          builder: ((context, snapshot) => StreamBuilder(
+          builder: ((context, snapshot) {
+            // Check for errors
+            if (snapshot.hasError) {
+              print(snapshot);
+            }
+// Once complete, show your application
+            if (snapshot.connectionState == ConnectionState.done) {
+              return StreamBuilder(
                 stream: FirebaseAuth.instance.authStateChanges(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.hasData) {
@@ -37,7 +44,11 @@ class MyApp extends StatelessWidget {
                   }
                   return const AuthScreen();
                 },
-              ))),
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          })),
     );
   }
 }
