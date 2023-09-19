@@ -1,11 +1,12 @@
 // ignore: depend_on_referenced_packages
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/auth_screet.dart';
 import 'package:flutter_complete_guide/screens/chat_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -31,10 +32,8 @@ class MyApp extends StatelessWidget {
           future: Firebase.initializeApp(),
           builder: ((context, snapshot) {
             // Check for errors
-            if (snapshot.hasError) {
-              print(snapshot);
-            }
-// Once complete, show your application
+            if (snapshot.hasError) {}
+            // Once complete, show your application
             if (snapshot.connectionState == ConnectionState.done) {
               return StreamBuilder(
                 stream: FirebaseAuth.instance.authStateChanges(),
