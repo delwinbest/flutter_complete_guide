@@ -1,64 +1,60 @@
 import 'package:flutter/material.dart';
-import 'quiz.dart';
-import 'result.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
-  State<MyApp> createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Native Code',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
-  var _questions = const [
-    {
-      'questionText': 'What\'s your favourite color?',
-      'answers': ['Black', 'Green', 'Blue', 'White']
-    },
-    {
-      'questionText': 'What\'s your favourite animal?',
-      'answers': ['Rabbit', 'Snake', 'Elephant', 'Lion']
-    },
-    {
-      'questionText': 'What\'s your favourite food?',
-      'answers': ['Beef', 'Chicken', 'Ribs', 'Steak']
-    }
-  ];
-  var _questionIndex = 0;
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
-  _answerQuestion() {
-    int arrLength = _questions.length;
-    this.setState(() {
-      if (_questionIndex < arrLength) {
-        _questionIndex = _questionIndex + 1;
-      }
-    });
-    print(_questionIndex);
+class _MyHomePageState extends State<MyHomePage> {
+  int _batteryLevel = 0;
+
+  Future<void> _getBatteryLevel() async {
+    const platform = MethodChannel('course.flutter.dev/battery');
+    try {
+      final batteryLevel = await platform.invokeMethod("getBatteryLevel");
+      setState(() {
+        _batteryLevel = batteryLevel;
+      });
+    } on PlatformException catch (error) {
+      print(error);
+      setState(() {
+        _batteryLevel = 0;
+      });
+    }
   }
 
-  _resetQuiz() {
-    setState(() {
-      _questionIndex = 0;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _getBatteryLevel();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text("My First App"),
-          ),
-          body: _questionIndex < _questions.length
-              ? Quiz(
-                  answerQuestion: _answerQuestion,
-                  questions: _questions,
-                  questionIndex: _questionIndex)
-              : Result(resetHandler: _resetQuiz)),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Native Code'),
+      ),
+      body: Center(
+        child: Text('Battery Level: $_batteryLevel'),
+      ),
     );
   }
 }
