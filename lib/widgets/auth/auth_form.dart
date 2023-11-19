@@ -58,6 +58,9 @@ class _AuthFormState extends State<AuthForm> {
                   if (!_isLogin) UserImagePicker(_pickedImage),
                   TextFormField(
                     key: const ValueKey('email'),
+                    autocorrect: false,
+                    textCapitalization: TextCapitalization.none,
+                    enableSuggestions: false,
                     keyboardType: TextInputType.emailAddress,
                     decoration:
                         const InputDecoration(labelText: 'Email address'),
@@ -75,6 +78,9 @@ class _AuthFormState extends State<AuthForm> {
                     TextFormField(
                       key: const ValueKey('username'),
                       decoration: const InputDecoration(labelText: 'Username'),
+                      autocorrect: true,
+                      textCapitalization: TextCapitalization.words,
+                      enableSuggestions: false,
                       validator: (value) {
                         if (value!.isEmpty || value.length < 4) {
                           return 'Please enter a username longer than 4 characters.';
