@@ -15,6 +15,14 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     FirebaseMessaging.instance.requestPermission();
+    FirebaseMessaging.onMessage.forEach((msg) {
+      print(msg.toMap());
+      return;
+    });
+    FirebaseMessaging.onMessageOpenedApp.forEach((msg) {
+      print(msg.toMap());
+      return;
+    });
     super.initState();
   }
 
